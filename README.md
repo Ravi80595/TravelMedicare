@@ -45,15 +45,42 @@ src/
  ├── app.js          # Express app setup
  └── server.js       # Entry point
 
- 🚀 Getting Started1. PrerequisitesNode.js (v18+) or Docker Desktop installed.A MongoDB Atlas connection string (or local MongoDB).2. Environment SetupCreate a .env file in the root directory:Code snippetPORT=5000
+## 🚀 Getting Started
+
+### 1. Prerequisites
+* **Node.js** (v18+) or **Docker Desktop** installed.
+* A **MongoDB Atlas** connection string (or a local MongoDB instance).
+
+### 2. Environment Setup
+Create a file named `.env` in the root directory and add the following:
+
+```env
+PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=HARDCODED_SECRET_123
-3. Installation & SeedingBash# Install dependencies
+
+# Install dependencies
 npm install
 
 # Seed the database with Admin, Staff, and Registered Supplier users
 npm run seed
-4. Running the AppOption A: Standard ExecutionBashnpm start
-Option B: Docker (Recommended)Bashdocker-compose up --build
-🔌 API EndpointsAutomated IngestionMethodEndpointAccessDescriptionPOST/email/productsRegistered EmailSimulates incoming email with bulk product data.Inventory ManagementMethodEndpointAccessDescriptionGET/productsAdmin, StaffView all inventory items.POST/productsAdmin OnlyManually create a single product.PUT/products/:idAdmin OnlyEdit an existing product.DELETE/products/:idAdmin, StaffRemove a product from inventory.✅ Quality AssuranceThis project includes a Comprehensive Integration Test Suite that verifies all requirements in a single run.To run the test suite:Bashnpm run test
-Verified Scenarios:[x] JWT Authentication & Role Identification.[x] Admin-only authorization for Product Creation/Editing.[x] Staff permissions for Viewing and Deletion.[x] Bulk Deduplication Logic (Name/Code collisions).[x] Security: Unauthorized/Unregistered email blocking (403).🧠 Architectural HighlightsDeduplication Strategy: Instead of relying solely on database errors, the service layer performs a pre-check using MongoDB $or queries to identify collisions in both name and productCode, ensuring clean data ingestion.Graceful Error Handling: A centralized middleware catches 11000 (Duplicate Key) Mongo errors and custom validation errors, returning semantic HTTP status codes.Modular Scalability: Each feature is contained within its own module, allowing for easy expansion (e.g., adding an 'Orders' or 'Customers' module) without affecting existing logic.
+
+npm start
+
+✅ Quality Assurance
+This project includes a Comprehensive Integration Test Suite that verifies all requirements in a single run.
+
+To run the test suite:
+
+Bash
+
+npm run test
+Verified Scenarios:
+
+[x] JWT Authentication: Role Identification and Secure Login.
+
+[x] Admin-only Authorization: Restricted access for Product Creation and Editing.
+
+[x] Staff permissions: Verified access for Viewing and Deletion.
+
+[x] Bulk Ingestion: Successful processing of product lists from registered sources.
